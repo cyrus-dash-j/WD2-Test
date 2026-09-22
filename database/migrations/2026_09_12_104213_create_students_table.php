@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('program', 50);
             $table->unsignedTinyInteger('year')->comment('Year of study');
             $table->date('birthday');
+            $table->string('profile_image')->nullable();
+
 
             $table->timestamps();
         });

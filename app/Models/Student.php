@@ -15,5 +15,6 @@ class Student extends Model
         'program',
         'year',
         'birthday',
+        'profile_image'
     ];
 }
