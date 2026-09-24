@@ -68,12 +68,16 @@
             <h2>Students Management System</h2>
             <p style="color: #64748b; font-size: 14px; margin-top: 4px;">Dynamic volumetric records environment.</p>
         </div>
-        <a href="{{ route('students.create') }}" class="btn btn-primary">➕ Add Student Profile</a>
+        @auth
+            <a href="{{ route('students.create') }}" class="btn btn-primary">Add Student Profile</a>
+        @else
+            <a href="{{ route('login') }}" class="btn btn-secondary">Sign in to add a record</a>
+        @endauth
     </div>
 
     <div class="metrics-grid">
         <div class="metric-card">
-            <span class="metric-title">Registered Dataset</span>
+            <span class="metric-title">Registered Data</span>
             <span class="metric-value" id="count-total">{{ $students->count() }}</span>
         </div>
         <div class="metric-card">
@@ -81,7 +85,7 @@
             <span class="metric-value" id="count-visible" style="color: #3b82f6;">{{ $students->count() }}</span>
         </div>
         <div class="metric-card">
-            <span class="metric-title">Syllabus Branches</span>
+            <span class="metric-title">University</span>
             <span class="metric-value">{{ $students->pluck('program')->unique()->count() }}</span>
         </div>
     </div>
@@ -125,15 +129,21 @@
         const cards = document.querySelectorAll('.student-card');
         const jsEmptyState = document.getElementById('jsEmptyState');
         const countVisible = document.getElementById('count-visible');
+        const normalize = value => value.toLowerCase().replace(/\s+/g, ' ').trim();
 
         const filterDashboard = () => {
-            const query = searchInput.value.toLowerCase().trim();
-            const selectedProgram = programFilter.value;
+            const query = normalize(searchInput?.value || '');
+            const selectedProgram = normalize(programFilter?.value || 'ALL');
             let visibleCount = 0;
 
             cards.forEach(card => {
-                const matchesSearch = card.dataset.name.includes(query) || card.dataset.searchable.includes(query);
-                const matchesProgram = (selectedProgram === 'ALL' || card.dataset.program === selectedProgram);
+                const searchableText = normalize([
+                    card.dataset.name || '',
+                    card.dataset.program || '',
+                    card.dataset.searchable || '',
+                ].join(' '));
+                const matchesSearch = searchableText.includes(query);
+                const matchesProgram = selectedProgram === 'all' || normalize(card.dataset.program || '') === selectedProgram;
 
                 if (matchesSearch && matchesProgram) {
                     card.style.display = 'flex';
@@ -144,7 +154,7 @@
             });
 
             if (countVisible) countVisible.textContent = visibleCount;
-            if (cards.length > 0) jsEmptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+            if (jsEmptyState) jsEmptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
         };
 
         searchInput?.addEventListener('input', filterDashboard);

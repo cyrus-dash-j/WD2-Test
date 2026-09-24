@@ -27,7 +27,7 @@
             <h2>Edit Student Details</h2>
             <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Modify database record fields for #{{ $student->id }}.</p>
         </div>
-        <a href="{{ route('students.index') }}" class="btn btn-secondary">⬅️ Return to List</a>
+        <a href="{{ route('students.index') }}" class="btn btn-secondary">↩ Return to List</a>
     </div>
 
     <div class="form-container-card">
@@ -82,12 +82,12 @@
                 </div>
                 <div class="form-grid-row" style="margin-bottom: 0; gap: 16px;">
                     <div class="input-field-group">
-                        <label for="program">Program Code</label>
+                        <label for="program">Program</label>
                         <input type="text" id="program" name="program" class="custom-input" value="{{ old('program', $student->program) }}" maxlength="10" required>
                         @error('program') <span class="error-inline-msg">{{ $message }}</span> @enderror
                     </div>
                     <div class="input-field-group">
-                        <label for="year">Curriculum Year</label>
+                        <label for="year">Year</label>
                         <input type="number" id="year" name="year" class="custom-input" value="{{ old('year', $student->year) }}" min="1" max="10" required>
                         @error('year') <span class="error-inline-msg">{{ $message }}</span> @enderror
                     </div>
@@ -110,8 +110,8 @@
             </div>
 
             <div class="form-buttons-action-row">
-                <a href="{{ route('students.index') }}" class="btn btn-secondary" style="padding: 12px 24px;">Cancel Modifications</a>
-                <button type="submit" class="btn btn-warning" style="padding: 12px 28px;">💾 Apply Operational Updates</button>
+                <a href="{{ route('students.index') }}" class="btn btn-secondary" style="padding: 12px 24px;">❌ Cancel Changes</a>
+                <button type="submit" class="btn btn-warning" style="padding: 12px 28px;">✅ Apply Changes</button>
             </div>
         </form>
     </div>

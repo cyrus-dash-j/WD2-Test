@@ -116,8 +116,8 @@
 
 <div class="student-card" 
      data-name="{{ strtolower($student->firstname . ' ' . $student->lastname) }}"
-     data-program="{{ $student->program }}"
-     data-searchable="{{ strtolower($student->school . ' ' . $student->province . ' ' . $student->country) }}"
+    data-program="{{ $student->program }}"
+    data-searchable="{{ strtolower($student->id . ' ' . $student->year . ' ' . $student->school . ' ' . $student->province . ' ' . $student->country) }}"
      onclick="window.location='{{ route('students.show', $student->id) }}'">
     
     <span class="year-badge">Yr {{ $student->year }}</span>
@@ -131,27 +131,29 @@
     @endif
 
     <h3 class="card-name">{{ $student->lastname }}, {{ $student->firstname }}</h3>
-    <span class="card-id">REG_RECORDID // #{{ $student->id }}</span>
+    <span class="card-id">ID#{{ $student->id }}</span>
     
     <span class="badge-program">{{ $student->program }}</span>
 
     <div class="card-info-row">
         <div class="info-item">
-            <span class="info-label">Campus Branch</span>
+            <span class="info-label">College</span>
             <span class="info-value">{{ $student->school }}</span>
         </div>
         <div class="info-item">
-            <span class="info-label">Region Sector</span>
+            <span class="info-label">Region</span>
             <span class="info-value" style="font-size:12px;">{{ $student->province }}, {{ $student->country }}</span>
         </div>
     </div>
 
-    <div class="card-actions" onclick="event.stopPropagation();">
-        <a href="{{ route('students.edit', $student->id) }}" class="btn btn-secondary btn-sm" style="color: #d97706;">Edit Profile</a>
-        <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Permanently purge this record matrix file block?');" style="width:100%; margin:0;">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm" style="width: 100%;">Delete</button>
-        </form>
-    </div>
+    @auth
+        <div class="card-actions" onclick="event.stopPropagation();">
+            <a href="{{ route('students.edit', $student->id) }}" class="btn btn-secondary btn-sm" style="color: #d97706;">Edit Profile</a>
+            <form action="{{ route('students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Permanently delete this student record?');" style="width:100%; margin:0;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm" style="width: 100%;">Delete</button>
+            </form>
+        </div>
+    @endauth
 </div>

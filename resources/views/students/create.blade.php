@@ -27,7 +27,7 @@
             <h2>Add New Student</h2>
             <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Initialize a brand new profile record inside the centralized register.</p>
         </div>
-        <a href="{{ route('students.index') }}" class="btn btn-secondary">⬅️ Return to List</a>
+        <a href="{{ route('students.index') }}" class="btn btn-secondary">↩ Return to List</a>
     </div>
 
     <div class="form-container-card">

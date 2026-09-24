@@ -22,7 +22,7 @@
             <h2>Student Profile Sheet</h2>
             <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Internal system profile summary report.</p>
         </div>
-        <a href="{{ route('students.index') }}" class="btn btn-secondary">⬅️ Directory</a>
+        <a href="{{ route('students.index') }}" class="btn btn-secondary">↩ Return to Dashboard</a>
     </div>
 
     <div class="details-container-card">
@@ -41,7 +41,7 @@
 
         <table class="details-table">
             <tr>
-                <td class="label-column">Record Registry ID</td>
+                <td class="label-column">Record ID</td>
                 <td style="font-family: monospace; font-weight: 600;">#{{ $student->id }}</td>
             </tr>
             <tr>
@@ -49,7 +49,7 @@
                 <td><span style="font-weight: 600; color: #1e40af; background: #eff6ff; padding: 2px 8px; border-radius: 4px; border: 1px solid #bfdbfe;">{{ $student->program }}</span></td>
             </tr>
             <tr>
-                <td class="label-column">Institutional Branch</td>
+                <td class="label-column">Institution</td>
                 <td style="font-weight: 500;">{{ $student->school }}</td>
             </tr>
             <tr>
@@ -57,17 +57,21 @@
                 <td>{{ \Carbon\Carbon::parse($student->birthday)->format('F d, Y') }}</td>
             </tr>
             <tr>
-                <td class="label-column">Regional Province</td>
+                <td class="label-column">Province</td>
                 <td>{{ $student->province }}</td>
             </tr>
             <tr>
-                <td class="label-column">Sovereign Country</td>
+                <td class="label-column">Country</td>
                 <td>{{ $student->country }}</td>
             </tr>
         </table>
 
         <div class="form-actions" style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning" style="padding: 12px;">Modify Core Metrics</a>
+            @auth
+                <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning" style="padding: 12px;">Modify Record</a>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-warning" style="padding: 12px;">Sign in to modify</a>
+            @endauth
             <a href="{{ route('students.index') }}" class="btn btn-secondary" style="padding: 12px;">Return to Dashboard</a>
         </div>
     </div>

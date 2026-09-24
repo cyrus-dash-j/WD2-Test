@@ -1,26 +1,34 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\StudentController; // Imported your Student Controller
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
-// Redirect the root URL straight to your student dashboard if authenticated
 Route::get('/', function () {
-    return redirect()->route('students.index');
+    $students = \App\Models\Student::query()->latest()->take(3)->get();
+
+    return view('welcome', compact('students'));
 });
 
-// Protected Dashboard Layout Group
 Route::middleware(['auth', 'verified'])->group(function () {
-    
-    // Redirects Breeze's default '/dashboard' route over to your custom student index
     Route::get('/dashboard', function () {
         return redirect()->route('students.index');
     })->name('dashboard');
-
-    // Securely maps all CRUD operations (Index, Create, Store, Show, Edit, Update, Destroy)
-    Route::resource('students', StudentController::class);
-    
 });
+
+Route::resource('students', StudentController::class)->only(['index']);
+
+Route::middleware('auth')->group(function () {
+    Route::resource('students', StudentController::class)->only([
+        'create',
+        'store',
+        'edit',
+        'update',
+        'destroy',
+    ]);
+});
+
+Route::resource('students', StudentController::class)->only(['show']);
 
 // Profile Management routes created by Breeze
 Route::middleware('auth')->group(function () {
